@@ -1,7 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monapplication
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: azure-vote-back
+  namespace: monapplication
 spec:
   replicas: 1
   selector:
@@ -13,7 +19,7 @@ spec:
         app: azure-vote-back
     spec:
       nodeSelector:
-        "beta.kubernetes.io/os": linux
+        "kubernetes.io/os": linux
       containers:
       - name: azure-vote-back
         image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
@@ -28,6 +34,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: azure-vote-back
+  namespace: monapplication
 spec:
   ports:
   - port: 6379
@@ -38,6 +45,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: azure-vote-front
+  namespace: monapplication
 spec:
   replicas: 1
   selector:
@@ -54,7 +62,7 @@ spec:
         app: azure-vote-front
     spec:
       nodeSelector:
-        "beta.kubernetes.io/os": linux
+        "kubernetes.io/os": linux
       containers:
       - name: azure-vote-front
         image: mcr.microsoft.com/azuredocs/azure-vote-front:v1
@@ -73,6 +81,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: azure-vote-front
+  namespace: monapplication
 spec:
   type: LoadBalancer
   ports:
